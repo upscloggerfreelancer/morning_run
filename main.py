@@ -17,6 +17,29 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 POPPINS_BOLD = os.path.join(BASE_DIR, "fonts", "Poppins-Bold.ttf")
 POPPINS_MED  = os.path.join(BASE_DIR, "fonts", "Poppins-Medium.ttf")
 LORA         = os.path.join(BASE_DIR, "fonts", "Lora-VariableFont_wght.ttf")
+
+# ====== Font debug + safe loader ======
+fonts_dir = os.path.join(BASE_DIR, "fonts")
+print("BASE_DIR:", BASE_DIR)
+print("fonts/ dir exists:", os.path.exists(fonts_dir))
+if os.path.exists(fonts_dir):
+    print("fonts/ contents:", os.listdir(fonts_dir))
+else:
+    print("fonts/ directory is MISSING from the deployed container. "
+          "Check that it's committed to git and not excluded by .gitignore.")
+
+def safe_font(path, size):
+    """Load a font, falling back to PIL's built-in default if the file is missing/corrupt."""
+    try:
+        return ImageFont.truetype(path, size)
+    except Exception as e:
+        print(f"WARNING: could not load font '{path}' ({e}); using default font instead.")
+        try:
+            return ImageFont.load_default(size=size)
+        except TypeError:
+            # older Pillow versions don't accept a size kwarg on load_default
+            return ImageFont.load_default()
+
 # ====== Google GenAI client ======
 
 api_key = os.environ["GEMINI_API"] #srijayadhikari@gmail.com API key
@@ -24,10 +47,6 @@ api_key = os.environ["GEMINI_API"] #srijayadhikari@gmail.com API key
 client = genai.Client(api_key=api_key)  #srijayadhikari@gmail.com API KEY
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
-
-
-
-
 
 
 BG         = (18, 18, 20)
@@ -69,15 +88,15 @@ def generate_upsc_graphic(text: str, save_dir: str = ".") -> str:
     lx, ly = pad + 64, pad + 72
 
     # — Header
-    label_font = ImageFont.truetype(POPPINS_BOLD, 42)
+    label_font = safe_font(POPPINS_BOLD, 42)
     draw.text((lx, ly), "UPSC LoG", font=label_font, fill=ACCENT)
     rule_y = ly + 62
     draw.rectangle([lx, rule_y, W-pad-64, rule_y+2], fill=ACCENT2)
-    tag_font = ImageFont.truetype(POPPINS_MED, 20)
+    tag_font = safe_font(POPPINS_MED, 20)
     draw.text((lx, rule_y+20), "Daily Fact", font=tag_font, fill=TEXT_MUTED)
 
     # — Body
-    body_font = ImageFont.truetype(LORA, 34)
+    body_font = safe_font(LORA, 34)
     try:
         body_font.set_variation_by_name("Bold")
     except Exception:
@@ -102,7 +121,7 @@ def generate_upsc_graphic(text: str, save_dir: str = ".") -> str:
     # — Footer
     foot_rule_y = H - pad - 112
     draw.rectangle([lx, foot_rule_y, W-pad-64, foot_rule_y+2], fill=ACCENT2)
-    foot_font = ImageFont.truetype(POPPINS_MED, 22)
+    foot_font = safe_font(POPPINS_MED, 22)
     draw.text((lx, foot_rule_y+22), "Prepare  ·  Practice  ·  Prevail",
               font=foot_font, fill=TEXT_MUTED)
     sq = 8

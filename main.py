@@ -137,11 +137,11 @@ text = None
 for attempt in range(1, MAX_RETRIES + 1):
     try:
         print(f"Generating fact... ({attempt}/{MAX_RETRIES})")
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-        )
-        text = response.text.strip()
+        # response = client.models.generate_content(
+        #     model="gemini-2.5-flash",
+        #     contents=prompt
+        # )
+        text = "this is a model response" #response.text.strip()
         if text:
             break
     except Exception as e:

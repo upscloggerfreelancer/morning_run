@@ -15,7 +15,7 @@ from datetime import date
 
 # ====== Google GenAI client ======
 
-api_key - os.environ["GEMINI_API"] #srijayadhikari@gmail.com API key
+api_key = os.environ["GEMINI_API"] #srijayadhikari@gmail.com API key
 
 client = genai.Client(api_key=api_key)  #srijayadhikari@gmail.com API KEY
 

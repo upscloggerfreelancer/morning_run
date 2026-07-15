@@ -12,7 +12,11 @@ from telegram import Bot, Poll
 import time
 
 from datetime import date
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+POPPINS_BOLD = os.path.join(BASE_DIR, "fonts", "Poppins-Bold.ttf")
+POPPINS_MED  = os.path.join(BASE_DIR, "fonts", "Poppins-Medium.ttf")
+LORA         = os.path.join(BASE_DIR, "fonts", "Lora-VariableFont_wght.ttf")
 # ====== Google GenAI client ======
 
 api_key = os.environ["GEMINI_API"] #srijayadhikari@gmail.com API key
@@ -34,9 +38,6 @@ TEXT_BODY  = (210, 205, 192)
 TEXT_MUTED = (130, 125, 115)
 W, H       = 1080, 1080
 
-POPPINS_BOLD = "fonts/Poppins-Bold.ttf"
-POPPINS_MED  = "fonts/Poppins-Medium.ttf"
-LORA         = "fonts/Lora-VariableFont_wght.ttf"
 
 HIGHLIGHT_COLORS = [
     (212, 175, 95),

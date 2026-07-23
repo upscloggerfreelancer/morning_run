@@ -177,7 +177,7 @@ print(text)
 
 image_genr = generate_upsc_graphic(text=text)
 
-CHAT_IDS = ["@upsclog" , "@upscgroupch" , "@upsc_mains_answer_writing_groupp"]
+CHAT_IDS = ["@upsclog" , "@upsc_mains_answer_writing_groupp"]
 
 TARGET_DATE = date(2027, 5, 24)
 days_left = (TARGET_DATE - date.today()).days
